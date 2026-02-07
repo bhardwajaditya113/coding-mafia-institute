@@ -11,7 +11,7 @@ export function generateMetadata({
   title = 'Coding Mafia Institute - World-Class IT Training',
   description = 'Premier coding training institute offering comprehensive courses in Web Development, Data Science, DevOps, Cloud Computing, and more.',
   image = '/og-image.jpg',
-  url = 'https://codingmafia.com',
+  url = 'https://infinityloop.online',
 }: SEOProps): Metadata {
   return {
     title,

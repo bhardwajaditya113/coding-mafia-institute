@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { courses } from '@/lib/data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://codingmafia.com'
+  const baseUrl = 'https://infinityloop.online'
   
   const courseUrls = courses.map((course) => ({
     url: `${baseUrl}/courses/${course.id}`,

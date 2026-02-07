@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   name: 'Coding Mafia Institute',
   description: 'World-class coding training institute for IT professionals',
-  url: 'https://codingmafia.com',
+  url: 'https://infinityloop.online',
   ogImage: '/og-image.jpg',
   links: {
     twitter: 'https://twitter.com/codingmafia',
