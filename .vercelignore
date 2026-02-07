@@ -1,0 +1,36 @@
+# Vercel ignore file
+# Files and directories to exclude from deployment
+
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.DS_Store
+*.pem
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation (optional - remove if you want docs deployed)
+*.md
+!README.md
