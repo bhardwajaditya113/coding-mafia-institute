@@ -9,7 +9,7 @@ import { useStore } from '@/lib/store'
 
 export default function SignupPage() {
   const router = useRouter()
-  const { setUser } = useStore()
+  const { setUser, addUser } = useStore()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -41,13 +41,17 @@ export default function SignupPage() {
 
     // Simulate API call
     setTimeout(() => {
-      setUser({
+      const newUser = {
         id: `user-${Date.now()}`,
         name: formData.name,
         email: formData.email,
-        role: 'student',
+        phone: formData.phone,
+        role: 'student' as const,
         enrolledCourses: [],
-      })
+      }
+      setUser(newUser)
+      // Also add to allUsers for admin tracking
+      addUser(newUser)
       router.push('/dashboard')
       setIsLoading(false)
     }, 1000)

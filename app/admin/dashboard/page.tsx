@@ -10,7 +10,7 @@ import { Users, BookOpen, TrendingUp, DollarSign, Calendar, Award, BarChart3, Ar
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default function AdminDashboard() {
-  const { user } = useStore()
+  const { user, allUsers, enrollments } = useStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -23,30 +23,39 @@ export default function AdminDashboard() {
     return null
   }
 
-  const totalStudents = 10000 // Mock data
+  // Real data from store
+  const totalStudents = allUsers.filter(u => u.role === 'student').length
   const totalCourses = courses.length
   const totalBatches = batches.length
   const upcomingBatches = batches.filter(b => b.status === 'upcoming').length
   const ongoingBatches = batches.filter(b => b.status === 'ongoing').length
-  const totalEnrolled = batches.reduce((sum, b) => sum + b.enrolled, 0)
-  const totalRevenue = batches.reduce((sum, b) => {
-    const course = courses.find(c => c.id === b.courseId)
-    return sum + (course ? course.price * b.enrolled : 0)
-  }, 0)
+  
+  // Real enrollment data
+  const paidEnrollments = enrollments.filter(e => e.paymentStatus === 'paid')
+  const totalEnrolled = paidEnrollments.length
+  
+  // Real revenue from actual paid enrollments
+  const totalRevenue = paidEnrollments.reduce((sum, e) => sum + e.amount, 0)
+  
+  // Recent enrollments (last 5)
+  const recentEnrollments = paidEnrollments
+    .sort((a, b) => new Date(b.enrolledAt).getTime() - new Date(a.enrolledAt).getTime())
+    .slice(0, 5)
 
   const stats = [
     { icon: Users, label: 'Total Students', value: totalStudents.toLocaleString(), color: 'text-blue-600', bg: 'bg-blue-100' },
     { icon: BookOpen, label: 'Total Courses', value: totalCourses, color: 'text-purple-600', bg: 'bg-purple-100' },
-    { icon: Calendar, label: 'Total Batches', value: totalBatches, color: 'text-green-600', bg: 'bg-green-100' },
+    { icon: Calendar, label: 'Total Enrollments', value: totalEnrolled.toLocaleString(), color: 'text-green-600', bg: 'bg-green-100' },
     { icon: TrendingUp, label: 'Total Revenue', value: formatCurrency(totalRevenue), color: 'text-orange-600', bg: 'bg-orange-100' },
   ]
 
-  const recentBatches = batches.slice(0, 5)
+  // Top courses by actual enrollments
   const topCourses = courses
     .map(course => {
-      const courseBatches = batches.filter(b => b.courseId === course.id)
-      const enrolled = courseBatches.reduce((sum, b) => sum + b.enrolled, 0)
-      return { ...course, enrolled }
+      const courseEnrollments = paidEnrollments.filter(e => e.courseId === course.id)
+      const enrolled = courseEnrollments.length
+      const revenue = courseEnrollments.reduce((sum, e) => sum + e.amount, 0)
+      return { ...course, enrolled, revenue }
     })
     .sort((a, b) => b.enrolled - a.enrolled)
     .slice(0, 5)
@@ -131,7 +140,7 @@ export default function AdminDashboard() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Recent Batches */}
+          {/* Recent Enrollments */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -139,39 +148,44 @@ export default function AdminDashboard() {
             className="glass-effect rounded-2xl p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Recent Batches</h2>
-              <Link href="/admin/batches" className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center space-x-1">
+              <h2 className="text-2xl font-bold">Recent Enrollments</h2>
+              <Link href="/admin/students" className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center space-x-1">
                 <span>View All</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="space-y-4">
-              {recentBatches.map((batch, index) => {
-                const course = courses.find(c => c.id === batch.courseId)
-                return (
-                  <div key={batch.id} className="p-4 bg-slate-50 rounded-xl">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-semibold">{batch.name}</div>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        batch.status === 'upcoming' ? 'bg-green-100 text-green-700' :
-                        batch.status === 'ongoing' ? 'bg-blue-100 text-blue-700' :
-                        'bg-slate-100 text-slate-700'
-                      }`}>
-                        {batch.status}
-                      </span>
+              {recentEnrollments.length > 0 ? (
+                recentEnrollments.map((enrollment) => {
+                  const course = courses.find(c => c.id === enrollment.courseId)
+                  const batch = batches.find(b => b.id === enrollment.batchId)
+                  const student = allUsers.find(u => u.id === enrollment.studentId)
+                  return (
+                    <div key={enrollment.id} className="p-4 bg-slate-50 rounded-xl">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-semibold">{student?.name || 'Student'}</div>
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                          Paid
+                        </span>
+                      </div>
+                      <div className="text-sm text-slate-600 mb-2">{course?.title}</div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600">
+                          {formatDate(enrollment.enrolledAt)} • {batch?.name || 'Batch'}
+                        </span>
+                        <span className="font-semibold text-primary-600">
+                          {formatCurrency(enrollment.amount)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-sm text-slate-600 mb-2">{course?.title}</div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600">
-                        {formatDate(batch.startDate)} • {batch.enrolled}/{batch.capacity} enrolled
-                      </span>
-                      <span className="font-semibold text-primary-600">
-                        {formatCurrency(course?.price || 0)}
-                      </span>
-                    </div>
-                  </div>
-                )
-              })}
+                  )
+                })
+              ) : (
+                <div className="text-center py-8 text-slate-500">
+                  <Users className="h-12 w-12 mx-auto mb-2 text-slate-300" />
+                  <p>No enrollments yet</p>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -205,8 +219,11 @@ export default function AdminDashboard() {
                       <Users className="h-4 w-4 inline mr-1" />
                       {course.enrolled} enrolled
                     </div>
-                    <div className="font-semibold text-primary-600">
-                      {formatCurrency(course.price)}
+                    <div className="text-right">
+                      <div className="font-semibold text-primary-600">
+                        {formatCurrency(course.revenue)}
+                      </div>
+                      <div className="text-xs text-slate-500">Revenue</div>
                     </div>
                   </div>
                 </div>

@@ -4,10 +4,13 @@ import { User, Enrollment } from '@/types'
 interface AppState {
   user: User | null
   enrollments: Enrollment[]
+  allUsers: User[] // Track all users for admin
   setUser: (user: User | null) => void
+  addUser: (user: User) => void // Add new user to allUsers
   addEnrollment: (enrollment: Enrollment) => void
   updateEnrollmentProgress: (enrollmentId: string, progress: number) => void
   updateEnrollmentPayment: (enrollmentId: string, paymentStatus: Enrollment['paymentStatus'], paymentId?: string) => void
+  getAllUsers: () => User[]
   logout: () => void
 }
 
@@ -54,12 +57,58 @@ const saveEnrollments = (enrollments: Enrollment[]) => {
   }
 }
 
+const loadAllUsers = (): User[] => {
+  if (typeof window === 'undefined') return []
+  try {
+    const stored = localStorage.getItem('coding-mafia-all-users')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
+const saveAllUsers = (users: User[]) => {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem('coding-mafia-all-users', JSON.stringify(users))
+  } catch {
+    // Ignore errors
+  }
+}
+
 export const useStore = create<AppState>((set, get) => ({
   user: loadUser(),
   enrollments: loadEnrollments(),
+  allUsers: loadAllUsers(),
   setUser: (user) => {
     saveUser(user)
     set({ user })
+    // Also add to allUsers if not already there
+    if (user) {
+      const allUsers = get().allUsers
+      const exists = allUsers.find(u => u.id === user.id || u.email === user.email)
+      if (!exists) {
+        const newAllUsers = [...allUsers, user]
+        saveAllUsers(newAllUsers)
+        set({ allUsers: newAllUsers })
+      } else {
+        // Update existing user
+        const updatedUsers = allUsers.map(u => 
+          (u.id === user.id || u.email === user.email) ? user : u
+        )
+        saveAllUsers(updatedUsers)
+        set({ allUsers: updatedUsers })
+      }
+    }
+  },
+  addUser: (user) => {
+    const allUsers = get().allUsers
+    const exists = allUsers.find(u => u.id === user.id || u.email === user.email)
+    if (!exists) {
+      const newAllUsers = [...allUsers, user]
+      saveAllUsers(newAllUsers)
+      set({ allUsers: newAllUsers })
+    }
   },
   addEnrollment: (enrollment) => {
     const newEnrollments = [...get().enrollments, enrollment]
@@ -80,9 +129,12 @@ export const useStore = create<AppState>((set, get) => ({
     saveEnrollments(updatedEnrollments)
     set({ enrollments: updatedEnrollments })
   },
+  getAllUsers: () => {
+    return get().allUsers
+  },
   logout: () => {
     saveUser(null)
-    saveEnrollments([])
-    set({ user: null, enrollments: [] })
+    // Don't clear enrollments or allUsers on logout
+    set({ user: null })
   },
 }))

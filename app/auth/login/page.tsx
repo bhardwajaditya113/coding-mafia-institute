@@ -9,7 +9,7 @@ import { useStore } from '@/lib/store'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { setUser } = useStore()
+  const { setUser, allUsers, addUser } = useStore()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -37,13 +37,19 @@ export default function LoginPage() {
         router.push('/admin/dashboard')
       } else if (formData.email && formData.password) {
         // Regular user login
-        setUser({
+        // Check if user already exists
+        const existingUser = allUsers.find(u => u.email === formData.email)
+        const loggedInUser = existingUser || {
           id: `user-${Date.now()}`,
           name: formData.email.split('@')[0],
           email: formData.email,
-          role: 'student',
+          role: 'student' as const,
           enrolledCourses: [],
-        })
+        }
+        setUser(loggedInUser)
+        if (!existingUser) {
+          addUser(loggedInUser)
+        }
         router.push('/dashboard')
       } else {
         setError('Please enter valid credentials')
