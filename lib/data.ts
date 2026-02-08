@@ -1,4 +1,5 @@
 import { Course, Batch, Category } from '@/types'
+import { getTomorrowDate } from './utils'
 
 export const categories: Category[] = [
   {
@@ -385,12 +386,15 @@ export const courses: Course[] = [
   },
 ]
 
+// Get tomorrow's date for all batch start dates
+const tomorrowDate = getTomorrowDate()
+
 export const batches: Batch[] = [
   {
     id: 'batch-001',
     courseId: 'nextjs-fullstack',
     name: 'Next.js 15 Full Stack - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Mon, Wed, Fri - 7:00 PM IST',
     capacity: 50,
@@ -402,7 +406,7 @@ export const batches: Batch[] = [
     id: 'batch-002',
     courseId: 'fullstack-mern',
     name: 'MERN Stack - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-05-02', // 12 weeks
     schedule: 'Tue, Thu - 6:00 PM IST',
     capacity: 40,
@@ -414,7 +418,7 @@ export const batches: Batch[] = [
     id: 'batch-003',
     courseId: 'ai-ml-python',
     name: 'AI & ML with Python - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-05-15', // 14 weeks
     schedule: 'Mon, Wed, Fri - 8:00 PM IST',
     capacity: 30,
@@ -426,7 +430,7 @@ export const batches: Batch[] = [
     id: 'batch-004',
     courseId: 'data-science-python',
     name: 'Data Science - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Sat, Sun - 10:00 AM IST',
     capacity: 35,
@@ -438,7 +442,7 @@ export const batches: Batch[] = [
     id: 'batch-005',
     courseId: 'aws-cloud',
     name: 'AWS Solutions Architect - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Mon, Wed, Fri - 7:30 PM IST',
     capacity: 30,
@@ -450,7 +454,7 @@ export const batches: Batch[] = [
     id: 'batch-006',
     courseId: 'docker-kubernetes',
     name: 'Docker & Kubernetes - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-03-22', // 6 weeks
     schedule: 'Tue, Thu - 7:00 PM IST',
     capacity: 35,
@@ -462,7 +466,7 @@ export const batches: Batch[] = [
     id: 'batch-007',
     courseId: 'react-native',
     name: 'React Native - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Mon, Wed, Fri - 6:30 PM IST',
     capacity: 30,
@@ -474,7 +478,7 @@ export const batches: Batch[] = [
     id: 'batch-008',
     courseId: 'ethical-hacking',
     name: 'Ethical Hacking - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-05-15', // 14 weeks
     schedule: 'Sat, Sun - 2:00 PM IST',
     capacity: 25,
@@ -486,7 +490,7 @@ export const batches: Batch[] = [
     id: 'batch-009',
     courseId: 'blockchain-web3',
     name: 'Blockchain & Web3 - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-05-02', // 12 weeks
     schedule: 'Tue, Thu - 8:00 PM IST',
     capacity: 30,
@@ -498,7 +502,7 @@ export const batches: Batch[] = [
     id: 'batch-010',
     courseId: 'react-advanced',
     name: 'Advanced React - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Mon, Wed, Fri - 6:00 PM IST',
     capacity: 40,
@@ -510,7 +514,7 @@ export const batches: Batch[] = [
     id: 'batch-011',
     courseId: 'azure-cloud',
     name: 'Microsoft Azure - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Tue, Thu - 7:00 PM IST',
     capacity: 30,
@@ -522,7 +526,7 @@ export const batches: Batch[] = [
     id: 'batch-012',
     courseId: 'nodejs-backend',
     name: 'Node.js Backend - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Mon, Wed, Fri - 6:30 PM IST',
     capacity: 40,
@@ -534,7 +538,7 @@ export const batches: Batch[] = [
     id: 'batch-013',
     courseId: 'typescript-mastery',
     name: 'TypeScript Mastery - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-03-22', // 6 weeks
     schedule: 'Sat, Sun - 11:00 AM IST',
     capacity: 35,
@@ -546,7 +550,7 @@ export const batches: Batch[] = [
     id: 'batch-014',
     courseId: 'devops-aws',
     name: 'DevOps with AWS - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Mon, Wed, Fri - 8:00 PM IST',
     capacity: 30,
@@ -558,7 +562,7 @@ export const batches: Batch[] = [
     id: 'batch-015',
     courseId: 'flutter-mobile',
     name: 'Flutter Mobile - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Tue, Thu - 7:30 PM IST',
     capacity: 30,
@@ -570,7 +574,7 @@ export const batches: Batch[] = [
     id: 'batch-016',
     courseId: 'python-automation',
     name: 'Python Automation - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Mon, Wed, Fri - 7:00 PM IST',
     capacity: 40,
@@ -582,7 +586,7 @@ export const batches: Batch[] = [
     id: 'batch-017',
     courseId: 'cybersecurity-fundamentals',
     name: 'Cybersecurity Fundamentals - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Sat, Sun - 1:00 PM IST',
     capacity: 35,
@@ -594,7 +598,7 @@ export const batches: Batch[] = [
     id: 'batch-018',
     courseId: 'data-analytics',
     name: 'Data Analytics - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Mon, Wed, Fri - 6:00 PM IST',
     capacity: 35,
@@ -606,7 +610,7 @@ export const batches: Batch[] = [
     id: 'batch-019',
     courseId: 'gcp-cloud',
     name: 'Google Cloud Platform - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-05', // 8 weeks
     schedule: 'Tue, Thu - 8:00 PM IST',
     capacity: 30,
@@ -618,7 +622,7 @@ export const batches: Batch[] = [
     id: 'batch-020',
     courseId: 'jenkins-cicd',
     name: 'CI/CD with Jenkins - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-03-22', // 6 weeks
     schedule: 'Sat, Sun - 10:00 AM IST',
     capacity: 35,
@@ -630,7 +634,7 @@ export const batches: Batch[] = [
     id: 'batch-021',
     courseId: 'web3-defi',
     name: 'Web3 & DeFi - Batch 1',
-    startDate: '2026-02-08',
+    startDate: tomorrowDate,
     endDate: '2026-04-19', // 10 weeks
     schedule: 'Tue, Thu - 7:00 PM IST',
     capacity: 30,

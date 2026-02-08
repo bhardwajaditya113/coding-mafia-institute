@@ -26,6 +26,16 @@ export function calculateProgress(completed: number, total: number): number {
   return Math.round((completed / total) * 100)
 }
 
+/**
+ * Get tomorrow's date in YYYY-MM-DD format
+ * Used for batch start dates - always one day from current date
+ */
+export function getTomorrowDate(): string {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  return tomorrow.toISOString().split('T')[0]
+}
+
 export function getInitials(name: string): string {
   return name
     .split(' ')
