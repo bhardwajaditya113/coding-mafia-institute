@@ -26,9 +26,6 @@ export default function AdminDashboard() {
   // Real data from store
   const totalStudents = allUsers.filter(u => u.role === 'student').length
   const totalCourses = courses.length
-  const totalBatches = batches.length
-  const upcomingBatches = batches.filter(b => b.status === 'upcoming').length
-  const ongoingBatches = batches.filter(b => b.status === 'ongoing').length
   
   // Real enrollment data
   const paidEnrollments = enrollments.filter(e => e.paymentStatus === 'paid')
@@ -36,6 +33,19 @@ export default function AdminDashboard() {
   
   // Real revenue from actual paid enrollments
   const totalRevenue = paidEnrollments.reduce((sum, e) => sum + e.amount, 0)
+  
+  // Calculate actual batch enrollment counts from real enrollments
+  const batchesWithRealData = batches.map(batch => {
+    const batchEnrollments = paidEnrollments.filter(e => e.batchId === batch.id)
+    return {
+      ...batch,
+      enrolled: batchEnrollments.length, // Real enrollment count
+    }
+  })
+  
+  const totalBatches = batchesWithRealData.length
+  const upcomingBatches = batchesWithRealData.filter(b => b.status === 'upcoming').length
+  const ongoingBatches = batchesWithRealData.filter(b => b.status === 'ongoing').length
   
   // Recent enrollments (last 5)
   const recentEnrollments = paidEnrollments

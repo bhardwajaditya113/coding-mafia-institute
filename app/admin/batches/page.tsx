@@ -1,20 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useStore } from '@/lib/store'
 import { batches, courses } from '@/lib/data'
 import { Plus, Edit, Trash2, Calendar, Clock, Users, User, Search } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import CreateBatchModal from '@/components/CreateBatchModal'
 
 export default function AdminBatchesPage() {
+  const { enrollments } = useStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [editingBatch, setEditingBatch] = useState<any>(null)
 
-  // In a real app, this would come from an API or database
-  const [batchesList, setBatchesList] = useState(batches)
+  // Get real enrollment data for batches
+  const paidEnrollments = enrollments.filter(e => e.paymentStatus === 'paid')
+  
+  // Sync batch enrollment counts with actual enrollments
+  const batchesWithRealData = batches.map(batch => {
+    const batchEnrollments = paidEnrollments.filter(e => e.batchId === batch.id)
+    return {
+      ...batch,
+      enrolled: batchEnrollments.length, // Real enrollment count from actual enrollments
+    }
+  })
+
+  const [batchesList, setBatchesList] = useState(batchesWithRealData)
 
   const filteredBatches = batchesList.filter((batch) => {
     const course = courses.find(c => c.id === batch.courseId)
