@@ -211,33 +211,40 @@ export default function AdminDashboard() {
               <Award className="h-6 w-6 text-yellow-500" />
             </div>
             <div className="space-y-4">
-              {topCourses.map((course, index) => (
-                <div key={course.id} className="p-4 bg-slate-50 rounded-xl">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold">
-                        {index + 1}
+              {topCourses.length > 0 ? (
+                topCourses.map((course, index) => (
+                  <div key={course.id} className="p-4 bg-slate-50 rounded-xl">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <div className="font-semibold">{course.title}</div>
+                          <div className="text-xs text-slate-600">{course.category}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-semibold">{course.title}</div>
-                        <div className="text-xs text-slate-600">{course.category}</div>
+                    </div>
+                    <div className="flex items-center justify-between mt-3">
+                      <div className="text-sm text-slate-600">
+                        <Users className="h-4 w-4 inline mr-1" />
+                        {course.enrolled} enrolled
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-primary-600">
+                          {formatCurrency(course.revenue)}
+                        </div>
+                        <div className="text-xs text-slate-500">Revenue</div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between mt-3">
-                    <div className="text-sm text-slate-600">
-                      <Users className="h-4 w-4 inline mr-1" />
-                      {course.enrolled} enrolled
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-primary-600">
-                        {formatCurrency(course.revenue)}
-                      </div>
-                      <div className="text-xs text-slate-500">Revenue</div>
-                    </div>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-slate-500">
+                  <BookOpen className="h-12 w-12 mx-auto mb-2 text-slate-300" />
+                  <p>No course enrollments yet</p>
                 </div>
-              ))}
+              )}
             </div>
           </motion.div>
         </div>
