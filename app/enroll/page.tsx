@@ -72,6 +72,12 @@ export default function EnrollPage() {
       return
     }
 
+    // Ensure course has a price (payment required)
+    if (!selectedCourse.price || selectedCourse.price <= 0) {
+      setPaymentError('This course requires payment. Please contact support if you believe this is an error.')
+      return
+    }
+
     setIsProcessingPayment(true)
 
     try {
@@ -388,24 +394,29 @@ export default function EnrollPage() {
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={!selectedCourse || !selectedBatch || isProcessingPayment}
-                className="w-full px-6 py-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-              >
-                {isProcessingPayment ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    <span>Processing Payment...</span>
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="h-5 w-5" />
-                    <span>Proceed to Payment</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </>
-                )}
-              </button>
+              <div className="space-y-2">
+                <button
+                  type="submit"
+                  disabled={!selectedCourse || !selectedBatch || isProcessingPayment}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                >
+                  {isProcessingPayment ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Processing Payment...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="h-5 w-5" />
+                      <span>Proceed to Payment</span>
+                      <ArrowRight className="h-5 w-5" />
+                    </>
+                  )}
+                </button>
+                <p className="text-xs text-center text-slate-500">
+                  ⚠️ Payment is required to complete enrollment. Enrollment will only be confirmed after successful payment.
+                </p>
+              </div>
             </motion.form>
           </div>
 
@@ -442,7 +453,10 @@ export default function EnrollPage() {
                         </span>
                       </div>
                       <div className="text-xs text-slate-500 mt-1">
-                        Payment via Razorpay (Secure)
+                        Payment via Razorpay (Secure) - Required for Enrollment
+                      </div>
+                      <div className="text-xs text-red-600 mt-2 font-medium">
+                        ⚠️ Enrollment will only be confirmed after successful payment
                       </div>
                     </div>
                   </div>
