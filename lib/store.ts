@@ -7,6 +7,7 @@ interface AppState {
   setUser: (user: User | null) => void
   addEnrollment: (enrollment: Enrollment) => void
   updateEnrollmentProgress: (enrollmentId: string, progress: number) => void
+  updateEnrollmentPayment: (enrollmentId: string, paymentStatus: Enrollment['paymentStatus'], paymentId?: string) => void
   logout: () => void
 }
 
@@ -34,25 +35,54 @@ const saveUser = (user: User | null) => {
   }
 }
 
-export const useStore = create<AppState>((set) => ({
+const loadEnrollments = (): Enrollment[] => {
+  if (typeof window === 'undefined') return []
+  try {
+    const stored = localStorage.getItem('coding-mafia-enrollments')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
+const saveEnrollments = (enrollments: Enrollment[]) => {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem('coding-mafia-enrollments', JSON.stringify(enrollments))
+  } catch {
+    // Ignore errors
+  }
+}
+
+export const useStore = create<AppState>((set, get) => ({
   user: loadUser(),
-  enrollments: [],
+  enrollments: loadEnrollments(),
   setUser: (user) => {
     saveUser(user)
     set({ user })
   },
-  addEnrollment: (enrollment) =>
-    set((state) => ({
-      enrollments: [...state.enrollments, enrollment],
-    })),
-  updateEnrollmentProgress: (enrollmentId, progress) =>
-    set((state) => ({
-      enrollments: state.enrollments.map((e) =>
-        e.id === enrollmentId ? { ...e, progress } : e
-      ),
-    })),
+  addEnrollment: (enrollment) => {
+    const newEnrollments = [...get().enrollments, enrollment]
+    saveEnrollments(newEnrollments)
+    set({ enrollments: newEnrollments })
+  },
+  updateEnrollmentProgress: (enrollmentId, progress) => {
+    const updatedEnrollments = get().enrollments.map((e) =>
+      e.id === enrollmentId ? { ...e, progress } : e
+    )
+    saveEnrollments(updatedEnrollments)
+    set({ enrollments: updatedEnrollments })
+  },
+  updateEnrollmentPayment: (enrollmentId, paymentStatus, paymentId) => {
+    const updatedEnrollments = get().enrollments.map((e) =>
+      e.id === enrollmentId ? { ...e, paymentStatus, paymentId } : e
+    )
+    saveEnrollments(updatedEnrollments)
+    set({ enrollments: updatedEnrollments })
+  },
   logout: () => {
     saveUser(null)
+    saveEnrollments([])
     set({ user: null, enrollments: [] })
   },
 }))

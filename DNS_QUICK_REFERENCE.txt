@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════════
+🌐 DNS RECORDS FOR infinityloop.online
+═══════════════════════════════════════════════════════════════
+
+Add these EXACT records at your domain registrar:
+
+───────────────────────────────────────────────────────────────
+RECORD 1 - Root Domain (infinityloop.online)
+───────────────────────────────────────────────────────────────
+Type:     A
+Name:     @ (or leave blank)
+Value:    216.198.79.1
+TTL:      3600 (or Auto)
+
+───────────────────────────────────────────────────────────────
+RECORD 2 - WWW (www.infinityloop.online)
+───────────────────────────────────────────────────────────────
+Type:     CNAME
+Name:     www
+Value:    e9959da8e8787c32.vercel-dns-017.com.
+TTL:      3600 (or Auto)
+
+⚠️ IMPORTANT: Include the trailing dot (.) in CNAME value!
+
+═══════════════════════════════════════════════════════════════
+📍 WHERE TO ADD:
+═══════════════════════════════════════════════════════════════
+
+1. Login to your domain registrar
+   (Namecheap, GoDaddy, Cloudflare, etc.)
+
+2. Find "DNS Management" or "DNS Settings"
+
+3. Add both records above
+
+4. Save and wait 10-15 minutes
+
+═══════════════════════════════════════════════════════════════
+✅ CHECK STATUS:
+═══════════════════════════════════════════════════════════════
+
+Go to Vercel Domains page and refresh:
+- After 10-15 min: "Valid Configuration" ✅
+- After 5-10 more min: "Valid Certificate" ✅
+
+Then visit: https://infinityloop.online
+
+═══════════════════════════════════════════════════════════════

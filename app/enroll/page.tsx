@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { courses, batches } from '@/lib/data'
-import { CheckCircle, ArrowRight, Calendar, Clock, User, Users } from 'lucide-react'
+import { CheckCircle, ArrowRight, Calendar, Clock, User, Users, CreditCard, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils'
 import { Batch, Course } from '@/types'
 import { useStore } from '@/lib/store'
+import { initiateRazorpayPayment, loadRazorpayScript } from '@/lib/razorpay'
 
 export default function EnrollPage() {
   const searchParams = useSearchParams()
@@ -20,10 +21,12 @@ export default function EnrollPage() {
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    phone: '',
+    phone: user?.phone || '',
     experience: '',
     goals: '',
   })
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+  const [paymentError, setPaymentError] = useState('')
 
   // Batch-first approach: if batch is selected, get course from batch
   const initialBatch: Batch | null = batchId ? batches.find(b => b.id === batchId) || null : null
@@ -43,34 +46,110 @@ export default function EnrollPage() {
       ? batches.filter(b => b.courseId === selectedCourse.id && b.status !== 'completed')
       : batches.filter(b => b.status !== 'completed')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Load Razorpay script when component mounts
+    loadRazorpayScript()
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setPaymentError('')
+    
     if (!selectedCourse || !selectedBatch) {
-      alert('Please select a course and a batch to enroll.')
+      setPaymentError('Please select a course and a batch to enroll.')
       return
     }
-    
-    // If user is logged in, add course to enrolled courses
-    if (user) {
-      const updatedEnrolledCourses = user.enrolledCourses.includes(selectedCourse.id)
-        ? user.enrolledCourses
-        : [...user.enrolledCourses, selectedCourse.id]
-      
-      setUser({
-        ...user,
-        enrolledCourses: updatedEnrolledCourses,
-      })
-    } else {
-      // If not logged in, redirect to login
+
+    if (!user) {
       if (confirm('Please sign in to enroll. Would you like to sign in now?')) {
         router.push(`/auth/login?redirect=/enroll?course=${selectedCourse.id}&batch=${selectedBatch.id}`)
-        return
+      }
+      return
+    }
+
+    if (!formData.phone) {
+      setPaymentError('Phone number is required for payment.')
+      return
+    }
+
+    setIsProcessingPayment(true)
+
+    try {
+      // Generate enrollment ID (will be used only after successful payment)
+      const enrollmentId = `enroll-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      
+      // Initiate Razorpay payment - this will open the payment modal
+      // The promise only resolves when payment is successfully completed
+      // If user cancels or payment fails, promise will reject and go to catch block
+      const paymentResponse = await initiateRazorpayPayment({
+        amount: selectedCourse.price * 100, // Convert to paise
+        currency: 'INR',
+        name: 'Coding Mafia Institute',
+        description: `Enrollment for ${selectedCourse.title} - ${selectedBatch.name}`,
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: {
+          color: '#3b82f6',
+        },
+      })
+
+      // Verify payment response is valid
+      if (!paymentResponse) {
+        throw new Error('Payment failed: No response received')
+      }
+
+      if (!paymentResponse.razorpay_payment_id) {
+        throw new Error('Payment failed: No payment ID received')
+      }
+
+      // Payment successful - NOW create enrollment
+      // This code only executes if payment was completed successfully
+      const { addEnrollment } = useStore.getState()
+      
+      const enrollment = {
+        id: enrollmentId,
+        studentId: user.id,
+        courseId: selectedCourse.id,
+        batchId: selectedBatch.id,
+        enrolledAt: new Date().toISOString(),
+        status: 'active' as const,
+        progress: 0,
+        paymentStatus: 'paid' as const,
+        paymentId: paymentResponse.razorpay_payment_id,
+        amount: selectedCourse.price,
+      }
+
+      addEnrollment(enrollment)
+
+      // Update user's enrolled courses
+      if (!user.enrolledCourses.includes(selectedCourse.id)) {
+        setUser({
+          ...user,
+          enrolledCourses: [...user.enrolledCourses, selectedCourse.id],
+          phone: formData.phone,
+        })
+      }
+
+      // Redirect to payment success page
+      router.push(`/payment/success?enrollment=${enrollmentId}&payment=${paymentResponse.razorpay_payment_id}`)
+    } catch (error: any) {
+      console.error('Payment error:', error)
+      setIsProcessingPayment(false)
+      
+      // Handle different error types
+      if (error.message === 'Payment cancelled by user') {
+        setPaymentError('Payment was cancelled. Please try again if you want to complete enrollment.')
+      } else if (error.message?.includes('Razorpay key not configured')) {
+        setPaymentError('Payment gateway not configured. Please contact support.')
+      } else if (error.message?.includes('Failed to load')) {
+        setPaymentError('Failed to load payment gateway. Please refresh the page and try again.')
+      } else {
+        setPaymentError(error.message || 'Payment failed. Please try again or contact support.')
       }
     }
-    
-    // Here you would typically send the enrollment data to your backend
-    alert(`Enrollment successful for ${selectedCourse.title} - ${selectedBatch.name}! You will receive a confirmation email shortly.`)
-    router.push('/dashboard')
   }
 
   return (
@@ -303,13 +382,29 @@ export default function EnrollPage() {
                 />
               </div>
 
+              {paymentError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {paymentError}
+                </div>
+              )}
+
               <button
                 type="submit"
-                disabled={!selectedCourse || !selectedBatch}
+                disabled={!selectedCourse || !selectedBatch || isProcessingPayment}
                 className="w-full px-6 py-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
-                <span>Complete Enrollment</span>
-                <ArrowRight className="h-5 w-5" />
+                {isProcessingPayment ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>Processing Payment...</span>
+                  </>
+                ) : (
+                  <>
+                    <CreditCard className="h-5 w-5" />
+                    <span>Proceed to Payment</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </>
+                )}
               </button>
             </motion.form>
           </div>
@@ -341,10 +436,13 @@ export default function EnrollPage() {
                     )}
                     <div className="pt-4 border-t border-slate-200">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-slate-600">Total</span>
+                        <span className="text-slate-600">Total Amount</span>
                         <span className="text-2xl font-bold gradient-text">
                           {formatCurrency(selectedCourse.price)}
                         </span>
+                      </div>
+                      <div className="text-xs text-slate-500 mt-1">
+                        Payment via Razorpay (Secure)
                       </div>
                     </div>
                   </div>

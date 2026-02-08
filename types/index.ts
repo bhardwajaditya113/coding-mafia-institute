@@ -35,6 +35,9 @@ export interface Enrollment {
   enrolledAt: string
   status: 'active' | 'completed' | 'cancelled'
   progress: number
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
+  paymentId?: string
+  amount: number
 }
 
 export interface User {
@@ -43,7 +46,8 @@ export interface User {
   email: string
   role: 'student' | 'admin' | 'instructor'
   avatar?: string
-  enrolledCourses: string[]
+  enrolledCourses: string[] // Deprecated - use enrollments array instead
+  phone?: string
 }
 
 export interface Category {

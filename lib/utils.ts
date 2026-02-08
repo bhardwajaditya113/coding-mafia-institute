@@ -14,7 +14,7 @@ export function formatCurrency(amount: number): string {
 }
 
 export function formatDate(date: string | Date): string {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-IN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
