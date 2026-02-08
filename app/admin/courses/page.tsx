@@ -66,7 +66,7 @@ export default function AdminCoursesPage() {
     { icon: TrendingUp, label: 'Avg Revenue/Course', value: formatCurrency(avgRevenuePerCourse), color: 'text-orange-600', bg: 'bg-orange-100' },
   ]
 
-  const categories = ['all', ...new Set(courses.map(c => c.category))]
+  const categories = ['all', ...Array.from(new Set(courses.map(c => c.category)))]
 
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
