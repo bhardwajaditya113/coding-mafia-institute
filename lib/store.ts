@@ -7,6 +7,8 @@ interface AppState {
   allUsers: User[] // Track all users for admin
   setUser: (user: User | null) => void
   addUser: (user: User) => void // Add new user to allUsers
+  updateUser: (userId: string, updates: Partial<User>) => void
+  deleteUser: (userId: string) => void
   addEnrollment: (enrollment: Enrollment) => void
   updateEnrollmentProgress: (enrollmentId: string, progress: number) => void
   updateEnrollmentPayment: (enrollmentId: string, paymentStatus: Enrollment['paymentStatus'], paymentId?: string) => void
@@ -110,6 +112,32 @@ export const useStore = create<AppState>((set, get) => ({
       saveAllUsers(newAllUsers)
       set({ allUsers: newAllUsers })
     }
+  },
+  updateUser: (userId, updates) => {
+    const allUsers = get().allUsers
+    const updatedUsers = allUsers.map(u => 
+      u.id === userId ? { ...u, ...updates } : u
+    )
+    saveAllUsers(updatedUsers)
+    set({ allUsers: updatedUsers })
+    // Also update current user if it's the same user
+    const currentUser = get().user
+    if (currentUser && currentUser.id === userId) {
+      const updatedUser = { ...currentUser, ...updates }
+      saveUser(updatedUser)
+      set({ user: updatedUser })
+    }
+  },
+  deleteUser: (userId) => {
+    const allUsers = get().allUsers
+    const updatedUsers = allUsers.filter(u => u.id !== userId)
+    saveAllUsers(updatedUsers)
+    set({ allUsers: updatedUsers })
+    // Also delete all enrollments for this user
+    const enrollments = get().enrollments
+    const updatedEnrollments = enrollments.filter(e => e.studentId !== userId)
+    saveEnrollments(updatedEnrollments)
+    set({ enrollments: updatedEnrollments })
   },
   addEnrollment: (enrollment) => {
     const newEnrollments = [...get().enrollments, enrollment]

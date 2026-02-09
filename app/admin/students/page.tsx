@@ -6,13 +6,16 @@ import { useStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { courses, batches } from '@/lib/data'
-import { Users, Mail, Phone, BookOpen, DollarSign, Search, ArrowLeft, Calendar, CheckCircle, Trash2 } from 'lucide-react'
+import { Users, Mail, Phone, BookOpen, DollarSign, Search, ArrowLeft, Calendar, CheckCircle, Trash2, Plus, Edit } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import StudentModal from '@/components/StudentModal'
 
 export default function AdminStudentsPage() {
-  const { user, allUsers, enrollments, deleteEnrollment } = useStore()
+  const { user, allUsers, enrollments, deleteEnrollment, addUser, updateUser, deleteUser } = useStore()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [editingStudent, setEditingStudent] = useState<any>(null)
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
@@ -60,6 +63,32 @@ export default function AdminStudentsPage() {
   const handleDeleteEnrollment = (enrollmentId: string, courseTitle: string) => {
     if (confirm(`Delete enrollment for ${courseTitle}? This action cannot be undone.`)) {
       deleteEnrollment(enrollmentId)
+    }
+  }
+
+  // Handle create student
+  const handleCreateStudent = (studentData: any) => {
+    const newStudent: any = {
+      ...studentData,
+      id: `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      enrolledCourses: [],
+    }
+    addUser(newStudent)
+    setIsCreateModalOpen(false)
+  }
+
+  // Handle update student
+  const handleUpdateStudent = (studentData: any) => {
+    if (editingStudent) {
+      updateUser(editingStudent.id, studentData)
+      setEditingStudent(null)
+    }
+  }
+
+  // Handle delete student
+  const handleDeleteStudent = (studentId: string, studentName: string) => {
+    if (confirm(`Are you sure you want to delete ${studentName}? This will also delete all their enrollments. This action cannot be undone.`)) {
+      deleteUser(studentId)
     }
   }
 
@@ -143,7 +172,16 @@ export default function AdminStudentsPage() {
           transition={{ delay: 0.5 }}
           className="glass-effect rounded-2xl p-6 overflow-x-auto"
         >
-          <h2 className="text-2xl font-bold mb-6">All Students ({filteredStudents.length})</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">All Students ({filteredStudents.length})</h2>
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg hover:shadow-lg transition-all font-medium"
+            >
+              <Plus className="h-5 w-5" />
+              <span>Add Student</span>
+            </button>
+          </div>
           
           {filteredStudents.length > 0 ? (
             <div className="overflow-x-auto">
@@ -198,15 +236,22 @@ export default function AdminStudentsPage() {
                         </div>
                       </td>
                       <td className="py-4 px-4">
-                        <button
-                          onClick={() => {
-                            // Show student details modal or navigate to student detail page
-                            alert(`Student Details:\n\nName: ${student.name}\nEmail: ${student.email}\nPhone: ${student.phone || 'N/A'}\nEnrollments: ${student.enrolledCourses}\nTotal Spent: ${formatCurrency(student.totalSpent)}`)
-                          }}
-                          className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
-                        >
-                          View Details
-                        </button>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => setEditingStudent(student)}
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Edit student"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteStudent(student.id, student.name)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete student"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
                       </td>
                     </motion.tr>
                   ))}
@@ -286,6 +331,25 @@ export default function AdminStudentsPage() {
               ))}
             </div>
           </motion.div>
+        )}
+
+        {/* Create Student Modal */}
+        {isCreateModalOpen && (
+          <StudentModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            onSubmit={handleCreateStudent}
+          />
+        )}
+
+        {/* Edit Student Modal */}
+        {editingStudent && (
+          <StudentModal
+            isOpen={!!editingStudent}
+            onClose={() => setEditingStudent(null)}
+            onSubmit={handleUpdateStudent}
+            student={editingStudent}
+          />
         )}
       </div>
     </div>
