@@ -10,6 +10,7 @@ interface AppState {
   addEnrollment: (enrollment: Enrollment) => void
   updateEnrollmentProgress: (enrollmentId: string, progress: number) => void
   updateEnrollmentPayment: (enrollmentId: string, paymentStatus: Enrollment['paymentStatus'], paymentId?: string) => void
+  deleteEnrollment: (enrollmentId: string) => void
   getAllUsers: () => User[]
   logout: () => void
 }
@@ -126,6 +127,11 @@ export const useStore = create<AppState>((set, get) => ({
     const updatedEnrollments = get().enrollments.map((e) =>
       e.id === enrollmentId ? { ...e, paymentStatus, paymentId } : e
     )
+    saveEnrollments(updatedEnrollments)
+    set({ enrollments: updatedEnrollments })
+  },
+  deleteEnrollment: (enrollmentId) => {
+    const updatedEnrollments = get().enrollments.filter(e => e.id !== enrollmentId)
     saveEnrollments(updatedEnrollments)
     set({ enrollments: updatedEnrollments })
   },

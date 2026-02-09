@@ -6,11 +6,11 @@ import { useStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { courses, batches } from '@/lib/data'
-import { Users, Mail, Phone, BookOpen, DollarSign, Search, ArrowLeft, Calendar, CheckCircle } from 'lucide-react'
+import { Users, Mail, Phone, BookOpen, DollarSign, Search, ArrowLeft, Calendar, CheckCircle, Trash2 } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default function AdminStudentsPage() {
-  const { user, allUsers, enrollments } = useStore()
+  const { user, allUsers, enrollments, deleteEnrollment } = useStore()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -55,6 +55,13 @@ export default function AdminStudentsPage() {
     .filter(e => e.paymentStatus === 'paid')
     .reduce((sum, e) => sum + e.amount, 0)
   const avgSpentPerStudent = totalStudents > 0 ? totalRevenue / totalStudents : 0
+
+  // Handle delete enrollment
+  const handleDeleteEnrollment = (enrollmentId: string, courseTitle: string) => {
+    if (confirm(`Delete enrollment for ${courseTitle}? This action cannot be undone.`)) {
+      deleteEnrollment(enrollmentId)
+    }
+  }
 
   const stats = [
     { icon: Users, label: 'Total Students', value: totalStudents, color: 'text-blue-600', bg: 'bg-blue-100' },
@@ -262,6 +269,13 @@ export default function AdminStudentsPage() {
                               <span className="font-semibold text-green-600">
                                 {formatCurrency(enrollment.amount)}
                               </span>
+                              <button
+                                onClick={() => handleDeleteEnrollment(enrollment.id, course?.title || 'Course')}
+                                className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                title="Delete enrollment"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
                             </div>
                           </div>
                         )

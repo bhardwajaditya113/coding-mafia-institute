@@ -6,11 +6,11 @@ import { useStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { batches, courses } from '@/lib/data'
-import { Users, BookOpen, TrendingUp, DollarSign, Calendar, Award, BarChart3, ArrowRight } from 'lucide-react'
+import { Users, BookOpen, TrendingUp, DollarSign, Calendar, Award, BarChart3, ArrowRight, Trash2 } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default function AdminDashboard() {
-  const { user, allUsers, enrollments } = useStore()
+  const { user, allUsers, enrollments, deleteEnrollment } = useStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -69,6 +69,13 @@ export default function AdminDashboard() {
     })
     .sort((a, b) => b.enrolled - a.enrolled)
     .slice(0, 5)
+
+  // Handle delete enrollment
+  const handleDeleteEnrollment = (enrollmentId: string, studentName: string, courseTitle: string) => {
+    if (confirm(`Are you sure you want to delete the enrollment for ${studentName} in ${courseTitle}? This action cannot be undone.`)) {
+      deleteEnrollment(enrollmentId)
+    }
+  }
 
   return (
     <div className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -174,9 +181,18 @@ export default function AdminDashboard() {
                     <div key={enrollment.id} className="p-4 bg-slate-50 rounded-xl">
                       <div className="flex items-center justify-between mb-2">
                         <div className="font-semibold">{student?.name || 'Student'}</div>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
-                          Paid
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                            Paid
+                          </span>
+                          <button
+                            onClick={() => handleDeleteEnrollment(enrollment.id, student?.name || 'Student', course?.title || 'Course')}
+                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete enrollment"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
                       </div>
                       <div className="text-sm text-slate-600 mb-2">{course?.title}</div>
                       <div className="flex items-center justify-between text-sm">
