@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
-import Razorpay from 'razorpay'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +10,8 @@ export async function POST(request: NextRequest) {
       razorpay_signature,
       productId,
       license,
+      courseId,
+      batchId,
     } = body
 
     if (!process.env.RAZORPAY_KEY_SECRET) {
@@ -44,6 +45,8 @@ export async function POST(request: NextRequest) {
       orderId: razorpay_order_id,
       productId,
       license,
+      courseId,
+      batchId,
     })
   } catch (error) {
     console.error('Error verifying payment:', error)

@@ -83,6 +83,22 @@ export default function EnrollPage() {
     try {
       // Generate enrollment ID (will be used only after successful payment)
       const enrollmentId = `enroll-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+      // Create order on backend (same payment flow as product purchases)
+      const orderResponse = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: selectedCourse.price * 100,
+          courseId: selectedCourse.id,
+          batchId: selectedBatch.id,
+        }),
+      })
+
+      const orderData = await orderResponse.json()
+      if (!orderData.success || !orderData.orderId) {
+        throw new Error(orderData.error || orderData.details || 'Failed to create course order')
+      }
       
       // Initiate Razorpay payment - this will open the payment modal
       // The promise only resolves when payment is successfully completed
@@ -92,6 +108,7 @@ export default function EnrollPage() {
         currency: 'INR',
         name: 'Coding Mafia Institute',
         description: `Enrollment for ${selectedCourse.title} - ${selectedBatch.name}`,
+        order_id: orderData.orderId,
         prefill: {
           name: formData.name,
           email: formData.email,
@@ -109,6 +126,24 @@ export default function EnrollPage() {
 
       if (!paymentResponse.razorpay_payment_id) {
         throw new Error('Payment failed: No payment ID received')
+      }
+
+      // Verify payment signature on backend before enrollment creation
+      const verifyResponse = await fetch('/api/payment/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          razorpay_payment_id: paymentResponse.razorpay_payment_id,
+          razorpay_order_id: paymentResponse.razorpay_order_id,
+          razorpay_signature: paymentResponse.razorpay_signature,
+          courseId: selectedCourse.id,
+          batchId: selectedBatch.id,
+        }),
+      })
+
+      const verifyData = await verifyResponse.json()
+      if (!verifyData.success) {
+        throw new Error(verifyData.error || verifyData.details || 'Payment verification failed')
       }
 
       // Payment successful - NOW create enrollment

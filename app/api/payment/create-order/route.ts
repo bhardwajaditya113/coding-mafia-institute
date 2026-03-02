@@ -1,22 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 
+const getErrorMessage = (error: unknown) => {
+  if (error instanceof Error) return error.message
+  if (error && typeof error === 'object') {
+    const err = error as { error?: { description?: string }; description?: string }
+    return err.error?.description || err.description || JSON.stringify(error)
+  }
+  return 'Unknown error'
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { amount, courseId, batchId, productId, productName, license } = body
 
-    // Receipt must be max 40 characters (Razorpay requirement)
-    const timestamp = Math.random().toString(36).substr(2, 9)
-    const receipt = productId 
-      ? `p_${productId}_${timestamp}`
-      : `c_${courseId}_${timestamp}`
+    const parsedAmount = Number(amount)
+    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid amount' },
+        { status: 400 }
+      )
+    }
 
-    const notes: Record<string, string | number> = productId
+    const isProductPurchase = Boolean(productId)
+    const isCoursePurchase = Boolean(courseId && batchId)
+
+    if (!isProductPurchase && !isCoursePurchase) {
+      return NextResponse.json(
+        { success: false, error: 'Provide either productId or courseId+batchId' },
+        { status: 400 }
+      )
+    }
+
+    if (isProductPurchase && !license) {
+      return NextResponse.json(
+        { success: false, error: 'License is required for product purchases' },
+        { status: 400 }
+      )
+    }
+
+    // Receipt must be max 40 characters (Razorpay requirement)
+    const receiptSeed = isProductPurchase
+      ? String(productId)
+      : `${String(courseId)}_${String(batchId)}`
+    const sanitizedSeed = receiptSeed.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 20)
+    const shortTimestamp = Date.now().toString().slice(-10)
+    const receipt = `${isProductPurchase ? 'p' : 'c'}_${sanitizedSeed}_${shortTimestamp}`.slice(0, 40)
+
+    const notes: Record<string, string | number> = isProductPurchase
       ? {
           type: 'product_purchase',
           productId: productId as string,
-          productName: productName as string,
+          productName: (productName as string) || 'Product Purchase',
           license: license as string,
         }
       : {
@@ -33,7 +69,7 @@ export async function POST(request: NextRequest) {
       })
 
       const order = await razorpay.orders.create({
-        amount: amount, // Already in paise
+        amount: parsedAmount, // in paise
         currency: 'INR',
         receipt,
         notes,
@@ -51,14 +87,14 @@ export async function POST(request: NextRequest) {
       
       console.log('📝 Mock Order Created (Development Mode)')
       console.log('Order ID:', mockOrderId)
-      console.log('Amount:', amount / 100, 'INR')
+      console.log('Amount:', parsedAmount / 100, 'INR')
       console.log('Product:', productId || courseId)
       console.log('License:', license || 'N/A')
 
       return NextResponse.json({
         success: true,
         orderId: mockOrderId,
-        amount: amount,
+        amount: parsedAmount,
         currency: 'INR',
         isDevelopment: true,
         message: 'Development mode - Use test card 4111 1111 1111 1111'
@@ -70,7 +106,7 @@ export async function POST(request: NextRequest) {
       { 
         success: false,
         error: 'Failed to create order',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: getErrorMessage(error)
       },
       { status: 500 }
     )
