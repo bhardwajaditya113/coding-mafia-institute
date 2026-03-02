@@ -91,7 +91,7 @@ export interface ProductPurchase {
   userId: string
   productId: string
   purchasedAt: string
-  paymentId: string
+  paymentId?: string
   amount: number
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
   downloadUrl?: string
