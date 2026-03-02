@@ -29,7 +29,7 @@ export default function AdminCustomersPage() {
     .filter(u => u.role === 'student')
     .map(student => {
       const productBuys = productPurchases.filter(p => p.userId === student.id && p.paymentStatus === 'paid')
-      const courseEnrollments = enrollments.filter(e => e.userId === student.id && e.paymentStatus === 'paid')
+      const courseEnrollments = enrollments.filter(e => e.studentId === student.id && e.paymentStatus === 'paid')
       
       const productRevenue = productBuys.reduce((sum, p) => {
         return sum + (p.amount || 0)
