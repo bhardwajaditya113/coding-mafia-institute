@@ -27,24 +27,25 @@ export default function CoursesPage() {
   }, [searchQuery, selectedCategory, selectedLevel])
 
   return (
-    <div className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen">
+    <div className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-500 mb-2">Career Engine</p>
           <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            Explore Our <span className="gradient-text">Courses</span>
+            Explore Expert-Led <span className="gradient-text">Courses</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Choose from 50+ expert-led courses designed for IT professionals
+            Job-ready tracks aligned with modern stacks, certifications, and implementation outcomes.
           </p>
         </motion.div>
 
         {/* Search and Filters */}
-        <div className="mb-8 space-y-4">
+        <div className="mb-8 space-y-4 premium-panel p-5 md:p-6">
           {/* Search Bar */}
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
@@ -53,7 +54,7 @@ export default function CoursesPage() {
               placeholder="Search courses..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 glass-effect rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full pl-12 pr-4 py-4 bg-white/75 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
 
@@ -144,7 +145,7 @@ function CourseCard({ course, index }: { course: Course; index: number }) {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -8, scale: 1.02 }}
-      className="glass-effect rounded-2xl overflow-hidden card-hover"
+      className="premium-panel overflow-hidden card-hover"
     >
       <div className="relative h-48 bg-gradient-to-br from-primary-500 to-accent-500">
         <div className="absolute inset-0 flex items-center justify-center">

@@ -3,19 +3,34 @@ import { GraduationCap, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instag
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-300">
+    <footer className="relative bg-slate-950 text-slate-300 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.2),transparent_40%),radial-gradient(circle_at_90%_80%,rgba(168,85,247,0.2),transparent_45%)]" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="relative z-10 mb-8 premium-panel p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <p className="text-sm text-slate-500 uppercase tracking-[0.2em] mb-1">Infinity Loop</p>
+            <h3 className="text-2xl font-bold text-slate-900">Source Code Marketplace + Skill Academy</h3>
+            <p className="text-slate-600 text-sm mt-1">Buy, launch, learn, and scale with one unified platform.</p>
+          </div>
+          <Link href="/marketplace" className="px-5 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-accent-600 text-white font-semibold hover:shadow-xl transition-all">
+            Explore Marketplace
+          </Link>
+        </div>
+
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg">
                 <GraduationCap className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">Coding Mafia</span>
+              <div>
+                <span className="text-xl font-bold text-white">Infinity Loop</span>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">by Coding Mafia</p>
+              </div>
             </Link>
             <p className="text-slate-400">
-              World-class coding training institute for IT professionals. Transform your career with expert-led courses.
+              Premium source code products and world-class tech courses crafted for founders, developers, agencies, and job seekers.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="p-2 rounded-lg bg-slate-800 hover:bg-primary-600 transition-colors">
@@ -39,6 +54,9 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="hover:text-primary-400 transition-colors">Home</Link>
+              </li>
+              <li>
+                <Link href="/marketplace" className="hover:text-primary-400 transition-colors">Marketplace</Link>
               </li>
               <li>
                 <Link href="/courses" className="hover:text-primary-400 transition-colors">Courses</Link>

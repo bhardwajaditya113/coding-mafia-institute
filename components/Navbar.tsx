@@ -20,15 +20,18 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-effect shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/40 bg-white/65 backdrop-blur-xl shadow-[0_8px_30px_rgba(15,23,42,0.08)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg group-hover:scale-110 transition-transform">
+            <div className="p-2 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl group-hover:scale-110 transition-transform shadow-lg shadow-primary-500/30">
               <GraduationCap className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text">Coding Mafia</span>
+            <div className="leading-tight">
+              <span className="text-xl font-bold gradient-text">Infinity Loop</span>
+              <p className="text-[10px] tracking-[0.18em] uppercase text-slate-500">by Coding Mafia</p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -154,7 +157,7 @@ export default function Navbar() {
 
             <Link
               href="/enroll"
-              className="px-6 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-lg font-medium hover:shadow-lg hover:scale-105 transition-all"
+              className="px-6 py-2 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all"
             >
               Enroll Now
             </Link>

@@ -28,17 +28,18 @@ export default function Hero() {
           >
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-full text-sm font-medium text-primary-600">
               <TrendingUp className="h-4 w-4" />
-              <span>Premium Source Code & Training Solutions</span>
+              <span>Premium Source Code + Career Accelerators</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Build, Learn & Scale with{' '}
-              <span className="gradient-text">Production-Ready</span> Code
+              Ship Faster with{' '}
+              <span className="gradient-text">Battle-Tested</span> Products & Courses
             </h1>
 
             <p className="text-xl text-slate-600 leading-relaxed">
-              Get instant access to premium source code, complete documentation, and expert training. 
-              Launch your projects faster with proven architectures used by industry leaders.
+              Infinity Loop is your dual-engine growth platform: buy deploy-ready source code and
+              master implementation with expert-led training. Built for founders, freelancers,
+              agencies, and ambitious learners.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -46,7 +47,7 @@ export default function Hero() {
                 href="/marketplace"
                 className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center space-x-2"
               >
-                <span>Browse Products</span>
+                <span>Buy Source Code</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -54,7 +55,7 @@ export default function Hero() {
                 className="px-8 py-4 glass-effect rounded-xl font-semibold text-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
               >
                 <Play className="h-5 w-5 text-primary-600" />
-                <span>Explore Courses</span>
+                <span>Join Courses</span>
               </Link>
             </div>
 
@@ -65,21 +66,21 @@ export default function Hero() {
                   <Users className="h-5 w-5" />
                 </div>
                 <div className="text-3xl font-bold">5K+</div>
-                <div className="text-slate-600">Downloads</div>
+                <div className="text-slate-600">Builder Installs</div>
               </div>
               <div>
                 <div className="flex items-center space-x-2 text-accent-600 mb-2">
                   <Award className="h-5 w-5" />
                 </div>
                 <div className="text-3xl font-bold">10+</div>
-                <div className="text-slate-600">Products</div>
+                <div className="text-slate-600">Code Systems</div>
               </div>
               <div>
                 <div className="flex items-center space-x-2 text-purple-600 mb-2">
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div className="text-3xl font-bold">4.8★</div>
-                <div className="text-slate-600">Avg Rating</div>
+                <div className="text-slate-600">Learner & Buyer Rating</div>
               </div>
             </div>
           </motion.div>
@@ -115,9 +116,9 @@ export default function Hero() {
               <div className="relative bg-gradient-to-br from-primary-500 to-accent-500 rounded-3xl p-12 shadow-2xl">
                 <div className="space-y-6 text-white">
                   <div className="text-6xl font-bold">🚀</div>
-                  <h3 className="text-2xl font-bold">Transform Your Career</h3>
+                  <h3 className="text-2xl font-bold">From Idea to Revenue</h3>
                   <p className="text-white/90">
-                    Enroll in our upcoming batches. Limited seats available!
+                    Launch with ready source code and upscale with guided learning tracks.
                   </p>
                   <div className="flex items-center space-x-4 pt-4">
                     <div className="flex -space-x-2">
@@ -128,7 +129,7 @@ export default function Hero() {
                         />
                       ))}
                     </div>
-                    <span className="text-sm">500+ enrolled this month</span>
+                    <span className="text-sm">500+ active builders this month</span>
                   </div>
                 </div>
               </div>
