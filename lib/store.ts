@@ -1,9 +1,10 @@
 import { create } from 'zustand'
-import { User, Enrollment } from '@/types'
+import { User, Enrollment, ProductPurchase } from '@/types'
 
 interface AppState {
   user: User | null
   enrollments: Enrollment[]
+  productPurchases: ProductPurchase[]
   allUsers: User[] // Track all users for admin
   setUser: (user: User | null) => void
   addUser: (user: User) => void // Add new user to allUsers
@@ -13,6 +14,8 @@ interface AppState {
   updateEnrollmentProgress: (enrollmentId: string, progress: number) => void
   updateEnrollmentPayment: (enrollmentId: string, paymentStatus: Enrollment['paymentStatus'], paymentId?: string) => void
   deleteEnrollment: (enrollmentId: string) => void
+  addProductPurchase: (purchase: ProductPurchase) => void
+  updateProductPurchasePayment: (purchaseId: string, paymentStatus: ProductPurchase['paymentStatus'], paymentId?: string) => void
   getAllUsers: () => User[]
   logout: () => void
 }
@@ -79,9 +82,29 @@ const saveAllUsers = (users: User[]) => {
   }
 }
 
+const loadProductPurchases = (): ProductPurchase[] => {
+  if (typeof window === 'undefined') return []
+  try {
+    const stored = localStorage.getItem('coding-mafia-product-purchases')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
+const saveProductPurchases = (purchases: ProductPurchase[]) => {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem('coding-mafia-product-purchases', JSON.stringify(purchases))
+  } catch {
+    // Ignore errors
+  }
+}
+
 export const useStore = create<AppState>((set, get) => ({
   user: loadUser(),
   enrollments: loadEnrollments(),
+  productPurchases: loadProductPurchases(),
   allUsers: loadAllUsers(),
   setUser: (user) => {
     saveUser(user)
@@ -162,6 +185,18 @@ export const useStore = create<AppState>((set, get) => ({
     const updatedEnrollments = get().enrollments.filter(e => e.id !== enrollmentId)
     saveEnrollments(updatedEnrollments)
     set({ enrollments: updatedEnrollments })
+  },
+  addProductPurchase: (purchase) => {
+    const newPurchases = [...get().productPurchases, purchase]
+    saveProductPurchases(newPurchases)
+    set({ productPurchases: newPurchases })
+  },
+  updateProductPurchasePayment: (purchaseId, paymentStatus, paymentId) => {
+    const updatedPurchases = get().productPurchases.map((p) =>
+      p.id === purchaseId ? { ...p, paymentStatus, paymentId } : p
+    )
+    saveProductPurchases(updatedPurchases)
+    set({ productPurchases: updatedPurchases })
   },
   getAllUsers: () => {
     return get().allUsers

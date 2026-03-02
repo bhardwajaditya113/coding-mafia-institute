@@ -1,0 +1,72 @@
+[
+  {
+    "id": "company-website",
+    "name": "Company Website",
+    "resources": "Next.js & Laravel 11 Build a Modern Full-Stack Application",
+    "category": "IT/Software Development",
+    "competitors": "Google, Microsoft, Apple, Adobe, Salesforce, Oracle, Zoho, Freshworks, TCS iON, Browser Stack, Accenture, IBM Consulting, Capgemini, Infosys, Wipro, TCS, HCLTech, Tech Mahindra, LTI MindTree, McKinsey & Company, Boston Consulting Group, Bain & Company, EY, Deloitte, PwC, KPMG, WPP, Publicis Groupe, Dentsu, Hubspot, Cognizant, Genpact, Teleperformance, Infosys BPM, "
+  },
+  {
+    "id": "learning-management-marketplace",
+    "name": "Learning Management Marketplace",
+    "resources": "Laravel 11 - Build a Complete Learning Management System LMS",
+    "category": "EdTech/Online Education Platforms",
+    "competitors": "Udemy, Coursera, edX, Skillshare, Linkedin Learning, Pluralsight, Future Learn, Master Class, BYJU'S, Unacademy, Vedantu, upGrad, SimpliLearn, Great Learning, Physics Wallah, Adda247, WhiteHat Jr, CueMath, Toppr, Codecademy, Datacamp, Udacity, Scaler Academy"
+  },
+  {
+    "id": "multi-vendor-digital-marketplace-",
+    "name": "Multi Vendor Digital Marketplace ",
+    "resources": "Laravel 11: Build a Multi-Vendor Digital Marketplace (2025)",
+    "category": "Ecommerce/Online Marketplace",
+    "competitors": "Amazon, Ebay, Alibaba, AliExpress, Walmart Marketplace, Rakuten, Etsy, Mercado Libre, Wayfair, Poshmark, Amazon India, Flipkart, Snapdeal, ShopClues, Myntra, Meesho, AJIO, JioMart, Nykaa, Etsy India"
+  },
+  {
+    "id": "job-portal",
+    "name": "Job Portal",
+    "resources": "Laravel 10 - Build an Advanced Job Portal Website (2024)",
+    "category": "Online Recruitment Services",
+    "competitors": "Indeed, Linkedin Jobs, Glassdoor, Monster, Career Builder, ZipRecruiter, CareerJet, GlobalJobs.org, We Work Remotely, Naukri.com, Linkedin Jobs, Indeed India, Found it, Shine.com, TimesJobs, Apna, Hirect, Cutshort, Jobs for Her, FreshersWorld, Internshala, Quickr Jobs, Jobsora"
+  },
+  {
+    "id": "directory-listing-",
+    "name": "Directory Listing ",
+    "resources": "Laravel 10 Develop a Directory Listing Website From Scratch",
+    "category": "Information Services/ Web Portals",
+    "competitors": "Google Business Profile, Yelp, Facebook Business Profile, Bing Places for Business, Foursquare, Trustpilot, Linkedin Company Pages, Apple Maps Connect, Justdial, IndiaMART, Sulekha, TradeIndia, Yellow Pages India, Hotfrog India, Bharath Listing"
+  },
+  {
+    "id": "news-portal",
+    "name": "News Portal",
+    "resources": "Laravel 10 - Build News Portal and Magazine Website (2024)",
+    "category": "Digital Media/Publishing",
+    "competitors": "BBC, CNN, Al Jazeera, Reuters, Associated Press, Agence France Presse, Bloomberg, The Guardian, Washington Post, New York Times, Times of India, The Hindu, Hindustan Times, NDTV, Indian Express, News 18, AajTak, OneIndia, Scroll.in, The Print, Rediff.com, Inshorts"
+  },
+  {
+    "id": "non-profit-charity",
+    "name": "Non Profit Charity",
+    "resources": "Laravel 10 - Marking a Complete Non-Profit Charity Website",
+    "category": "Social Services/Charity Tech",
+    "competitors": "Smile Foundation, CRY, Pratham Education Foundation, Nanhi Kali, Plan India, HelpAge India, GiveIndia Foundation, Goonj, The Akshaya Patra Foundation, WWF-India, Save the Children India, Impact Guru, Bharti Foundation, Milaap, Ketto, Give"
+  },
+  {
+    "id": "point-of-sale-system",
+    "name": "Point of Sale System",
+    "resources": "Laravel 9 Build Advanced Complete Point Of Sale Project A-Z",
+    "category": "FinTech/Retail Software",
+    "competitors": "Square, Shopify POS, Toast POS, Lightspeed, Clover, PineLabs, Paytm POS"
+  },
+  {
+    "id": "hotel-booking-and-reservation-",
+    "name": "Hotel Booking and Reservation ",
+    "resources": "Laravel 10 Build Complete Hotel Booking Reservation System",
+    "category": "TravelTech/Online Booking",
+    "competitors": "Booking.com, Expedia, Agoda, Hotels.com, Trivago, Kayak, Skyscanner, MakeMyTrip, Goibibo, Yatra Hotels, Cleartrip Hotels, ixigo Hotels, EaseMyTrip Hotels, Agoda, Airbnb, Oyo Rooms, FabHotels, Treebo Hotels, "
+  },
+  {
+    "id": "multi-restaurant-food-ordering-ecommerce",
+    "name": "Multi Restaurant Food Ordering Ecommerce",
+    "resources": "Laravel 11 Build Multi Restaurant Food Order Application A-Z",
+    "category": "FoodTech/Online Food Delivery/Quick Commerce",
+    "competitors": "Uber Eats, Door Dash, Grubhub, Postmates, Caviar, Seamless, EatStreet, Goldbelly, Swiggy, Zomato, Faasos, FreshMenu, Dunzo, Swiggy Instamart, Blinkit, Zepto, Amazon Now/Amazon Fresh, Flipkart Minutes & BB Now (BigBasket), JioMart Quick Delivery, Kiko Live"
+  }
+]

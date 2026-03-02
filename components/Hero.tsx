@@ -28,33 +28,33 @@ export default function Hero() {
           >
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 rounded-full text-sm font-medium text-primary-600">
               <TrendingUp className="h-4 w-4" />
-              <span>Trusted by 10,000+ IT Professionals</span>
+              <span>Premium Source Code & Training Solutions</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Master Coding Skills with{' '}
-              <span className="gradient-text">World-Class</span> Training
+              Build, Learn & Scale with{' '}
+              <span className="gradient-text">Production-Ready</span> Code
             </h1>
 
             <p className="text-xl text-slate-600 leading-relaxed">
-              Join thousands of professionals advancing their careers through our comprehensive 
-              coding courses. Expert instructors, hands-on projects, and industry-recognized certifications.
+              Get instant access to premium source code, complete documentation, and expert training. 
+              Launch your projects faster with proven architectures used by industry leaders.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/courses"
+                href="/marketplace"
                 className="group px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center space-x-2"
               >
-                <span>Explore Courses</span>
+                <span>Browse Products</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/batches"
+                href="/courses"
                 className="px-8 py-4 glass-effect rounded-xl font-semibold text-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
               >
                 <Play className="h-5 w-5 text-primary-600" />
-                <span>View Batches</span>
+                <span>Explore Courses</span>
               </Link>
             </div>
 
@@ -64,22 +64,22 @@ export default function Hero() {
                 <div className="flex items-center space-x-2 text-primary-600 mb-2">
                   <Users className="h-5 w-5" />
                 </div>
-                <div className="text-3xl font-bold">10K+</div>
-                <div className="text-slate-600">Students</div>
+                <div className="text-3xl font-bold">5K+</div>
+                <div className="text-slate-600">Downloads</div>
               </div>
               <div>
                 <div className="flex items-center space-x-2 text-accent-600 mb-2">
                   <Award className="h-5 w-5" />
                 </div>
-                <div className="text-3xl font-bold">50+</div>
-                <div className="text-slate-600">Courses</div>
+                <div className="text-3xl font-bold">10+</div>
+                <div className="text-slate-600">Products</div>
               </div>
               <div>
                 <div className="flex items-center space-x-2 text-purple-600 mb-2">
                   <TrendingUp className="h-5 w-5" />
                 </div>
-                <div className="text-3xl font-bold">95%</div>
-                <div className="text-slate-600">Success Rate</div>
+                <div className="text-3xl font-bold">4.8★</div>
+                <div className="text-slate-600">Avg Rating</div>
               </div>
             </div>
           </motion.div>

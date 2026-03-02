@@ -7,12 +7,14 @@ import CTA from '@/components/CTA'
 import UpcomingBatches from '@/components/UpcomingBatches'
 import CourseCarousel from '@/components/CourseCarousel'
 import PricingSection from '@/components/PricingSection'
+import ProductShowcase from '@/components/ProductShowcase'
 
 export default function Home() {
   return (
     <div className="flex flex-col overflow-x-hidden">
       <Hero />
       <Stats />
+      <ProductShowcase />
       <CourseCarousel />
       <UpcomingBatches />
       <CourseCategories />

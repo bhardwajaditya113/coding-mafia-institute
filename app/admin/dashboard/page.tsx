@@ -153,6 +153,20 @@ export default function AdminDashboard() {
               <BarChart3 className="h-6 w-6 mx-auto mb-2" />
               <div className="font-semibold">Analytics</div>
             </Link>
+            <Link
+              href="/admin/products"
+              className="p-4 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl text-white hover:shadow-xl transition-all text-center"
+            >
+              <Award className="h-6 w-6 mx-auto mb-2" />
+              <div className="font-semibold">Manage Products</div>
+            </Link>
+            <Link
+              href="/admin/customers"
+              className="p-4 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl text-white hover:shadow-xl transition-all text-center"
+            >
+              <Users className="h-6 w-6 mx-auto mb-2" />
+              <div className="font-semibold">Customers</div>
+            </Link>
           </div>
         </motion.div>
 

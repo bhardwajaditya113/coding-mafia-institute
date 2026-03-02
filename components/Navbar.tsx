@@ -36,6 +36,9 @@ export default function Navbar() {
             <Link href="/" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
               Home
             </Link>
+            <Link href="/marketplace" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
+              Marketplace
+            </Link>
             <Link href="/batches" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
               Batches
             </Link>
@@ -179,6 +182,9 @@ export default function Navbar() {
             <div className="px-4 py-4 space-y-3">
               <Link href="/" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
                 Home
+              </Link>
+              <Link href="/marketplace" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
+                Marketplace
               </Link>
               <Link href="/batches" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
                 Batches
