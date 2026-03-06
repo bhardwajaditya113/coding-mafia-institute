@@ -48,6 +48,9 @@ export default function Navbar() {
             <Link href="/courses" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
               Courses
             </Link>
+            <Link href="/resources" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
+              Resources
+            </Link>
             <Link href="/about" className="text-slate-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap">
               About
             </Link>
@@ -194,6 +197,9 @@ export default function Navbar() {
               </Link>
               <Link href="/courses" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
                 Courses
+              </Link>
+              <Link href="/resources" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
+                Resources
               </Link>
               <Link href="/about" className="block py-2 text-slate-700 hover:text-primary-600 whitespace-nowrap">
                 About
