@@ -24,11 +24,14 @@ export default function RootLayout({
   const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
   const LINKEDIN_PARTNER_ID = process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID
   const PINTEREST_TAG_ID = process.env.NEXT_PUBLIC_PINTEREST_TAG_ID
-  const ADSENSE_CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID
+  const ADSENSE_CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-1223825599701899'
 
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
+        {/* Google AdSense Verification Code */}
+        <meta name="google-adsense-account" content="ca-pub-1223825599701899" />
+        
         {/* Google Analytics 4 */}
         {GA_MEASUREMENT_ID && (
           <>
