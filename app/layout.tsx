@@ -32,6 +32,14 @@ export default function RootLayout({
         {/* Google AdSense Verification Code */}
         <meta name="google-adsense-account" content="ca-pub-1223825599701899" />
         
+        {/* Google AdSense Script */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1223825599701899"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        
         {/* Google Analytics 4 */}
         {GA_MEASUREMENT_ID && (
           <>
