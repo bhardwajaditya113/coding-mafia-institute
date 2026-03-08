@@ -70,6 +70,15 @@ export default function Footer() {
               <li>
                 <Link href="/enroll" className="hover:text-primary-400 transition-colors">Enroll Now</Link>
               </li>
+              <li>
+                <Link href="/privacy" className="hover:text-primary-400 transition-colors">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-primary-400 transition-colors">Terms &amp; Conditions</Link>
+              </li>
+              <li>
+                <Link href="/disclaimer" className="hover:text-primary-400 transition-colors">Disclaimer</Link>
+              </li>
             </ul>
           </div>
 
