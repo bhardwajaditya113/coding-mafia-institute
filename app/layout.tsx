@@ -30,14 +30,13 @@ export default function RootLayout({
     <html lang="en" className="overflow-x-hidden">
       <head>
         {/* Google AdSense Verification Code */}
-        <meta name="google-adsense-account" content="ca-pub-1223825599701899" />
+        <meta name="google-adsense-account" content={ADSENSE_CLIENT_ID} />
         
-        {/* Google AdSense Script */}
-        <Script
+        {/* Google AdSense Script (static head script for crawler verification) */}
+        <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1223825599701899"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
         
         {/* Google Analytics 4 */}
@@ -115,15 +114,6 @@ export default function RootLayout({
           </Script>
         )}
 
-        {/* Google AdSense - Add after approval */}
-        {ADSENSE_CLIENT_ID && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
       </head>
       <body className={`${inter.className} overflow-x-hidden`}>
         {/* Meta Pixel noscript fallback */}
