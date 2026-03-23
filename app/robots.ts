@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/api/'],
     },
-    sitemap: 'https://infinityloop.online/sitemap.xml',
+    sitemap: 'https://www.infinityloop.online/sitemap.xml',
   }
 }
